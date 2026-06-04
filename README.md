@@ -92,3 +92,7 @@ See [docs/architecture.md](docs/architecture.md) for the runtime flow and servic
 - [Extraction layer](docs/extraction.md)
 - [Deployment notes](docs/deployment.md)
 - [Usage guide](docs/usage.md)
+
+## License
+
+MIT — use freely for your business.
