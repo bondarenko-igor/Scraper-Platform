@@ -1,0 +1,14 @@
+.venv
+venv
+**/__pycache__
+*.pyc
+.git
+*.db
+.DS_Store
+frontend/node_modules
+backend/static
+backend/localhost.pem
+backend/localhost-key.pem
+.cursor
+agent-transcripts
+.env

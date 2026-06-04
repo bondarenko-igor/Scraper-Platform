@@ -1,0 +1,5 @@
+[console_scripts]
+scraper-api = scraper_platform.cli:api_main
+scraper-init-db = scraper_platform.cli:init_db_main
+scraper-platform = scraper_platform.cli:main
+scraper-worker = scraper_platform.cli:worker_main
