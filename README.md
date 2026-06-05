@@ -2,7 +2,7 @@
 
 Distributed scraping platform built around Playwright, PostgreSQL, FastAPI, rotating proxies, queue workers, and an AI extraction layer.
 
-This repository started as a tiny OLX parser. It now contains:
+Scraper Platform contains:
 
 - a PostgreSQL-backed durable job queue
 - a FastAPI control plane
@@ -80,7 +80,20 @@ curl -X POST http://localhost:8000/v1/proxies \
 docker compose up --build
 ```
 
-The API will be available on `http://localhost:8000`.
+The frontend will be available on `http://localhost:8000`.
+The API will be available on `http://localhost:8000/api`.
+
+## Web dashboard
+
+A React operations UI lives in [`frontend/`](frontend/). With the API running:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`. See [frontend/README.md](frontend/README.md) for architecture and API integration notes.
 
 ## Architecture
 

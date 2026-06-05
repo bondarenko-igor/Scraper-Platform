@@ -1,42 +1,62 @@
+# Frontend (Vite)
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app/frontend
+
+COPY scraper_platform/frontend/package.json ./
+COPY scraper_platform/frontend/package-lock.json ./
+
+RUN npm ci
+
+COPY scraper_platform/frontend ./
+RUN npm run build
+
+
+# Backend (FastAPI + Playwright)
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    PIP_NO_CACHE_DIR=1 \
+    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
+    VITE_API_URL=http://localhost:8000
 
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+    ca-certificates \
+    curl \
     git \
-    libpq-dev \
+    build-essential \
     libglib2.0-0 \
     libnss3 \
+    libatk1.0-0 \
     libatk-bridge2.0-0 \
-    libatspi2.0-0 \
     libcups2 \
-    libdbus-1-3 \
     libdrm2 \
     libxkbcommon0 \
-    libasound2 \
     libxcomposite1 \
     libxdamage1 \
     libxrandr2 \
     libgbm1 \
+    libasound2 \
     libgtk-3-0 \
-    libxcb1 \
-    libx11-xcb1 \
-    ca-certificates \
-    curl \
  && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml README.md ./
+COPY scraper_platform/backend/pyproject.toml ./
+COPY README.md ./
 COPY scraper_platform ./scraper_platform
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --upgrade pip \
- && pip install .
+RUN pip install --upgrade pip \
+ && pip install --no-cache-dir .
 
-RUN playwright install chromium
+
+
+RUN playwright install chromium \
+ && rm -rf /ms-playwright/.cache || true
+
+COPY --from=frontend-builder /app/frontend/dist ./frontend
 
 EXPOSE 8000
+
+CMD ["uvicorn", "scraper_platform.main:app", "--host", "0.0.0.0", "--port", "8000"]
