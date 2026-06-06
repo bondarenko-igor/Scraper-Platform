@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { ErrorBoundary } from '@/components/error-boundary'
+import { LandingPage } from '@/pages/landing-page'
 import { DashboardPage } from '@/pages/dashboard-page'
 import { JobsPage } from '@/pages/jobs-page'
 import { JobDetailPage } from '@/pages/job-detail-page'
@@ -20,7 +21,15 @@ export function AppRoutes() {
           index
           element={
             <ErrorBoundary>
-              <DashboardPage />
+              <LandingPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ErrorBoundary>
+              <LandingPage />
             </ErrorBoundary>
           }
         />
@@ -96,8 +105,16 @@ export function AppRoutes() {
             </ErrorBoundary>
           }
         />
+        <Route
+          path="dashboard"
+          element={
+            <ErrorBoundary>
+              <DashboardPage />
+            </ErrorBoundary>
+          }
+        />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }
